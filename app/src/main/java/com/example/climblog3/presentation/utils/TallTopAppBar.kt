@@ -1,4 +1,4 @@
-package com.example.climblog3.presentation
+package com.example.climblog3.presentation.utils
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight

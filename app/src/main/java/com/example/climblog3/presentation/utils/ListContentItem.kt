@@ -1,5 +1,6 @@
-package com.example.climblog3.presentation
+package com.example.climblog3.presentation.utils
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -11,13 +12,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.climblog3.presentation.ui.theme.ClimbLog3Theme
+import com.example.climblog3.presentation.ui.theme.secondaryUltraLight
 
 @Composable
-fun ListHeaderItem(title: String, caption: String, onClick: (Int) -> Unit) {
+fun ListHeaderItem(title: String, caption: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .height(48.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -48,7 +51,7 @@ fun ListContentItem(
 ) {
     Surface(
         Modifier.height(64.dp),
-        color = Color.Transparent,
+        color = MaterialTheme.colors.secondaryUltraLight,
     ) {
         LeftIcon(Modifier.padding(start = 4.dp))
 

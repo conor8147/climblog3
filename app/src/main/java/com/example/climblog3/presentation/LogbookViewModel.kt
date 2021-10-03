@@ -18,16 +18,10 @@ class LogbookViewModel @Inject constructor(
 ): ViewModel() {
     private val allClimbs: Flow<List<Climb>> = repository.allClimbs
 
-    val allGrades: Flow<List<String>> = repository.allClimbs.map { climbs ->
-        climbs.map { it.grade }
-            .distinct()
-            .sortedBy { it.toInt() }
+    val climbsByGrade: Flow<Map<String, List<Climb>>> = repository.allClimbs.map { climbs ->
+        climbs.groupBy { it.grade }
+            .toSortedMap()
     }
-
-    fun getClimbsForGrade(grade: String): Flow<List<Climb>> =
-        allClimbs.map { climbs ->
-            climbs.filter { it.grade == grade }
-        }
 
     fun insert(climb: Climb) = viewModelScope.launch {
         repository.insert(climb)

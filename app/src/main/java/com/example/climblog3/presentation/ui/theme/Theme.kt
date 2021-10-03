@@ -20,7 +20,6 @@ private val LightColorPalette = lightColors(
     primary = BlueGrey700,
     primaryVariant = BlueGrey900,
     secondary = Green300,
-
     background = Color.White,
     surface = Color.White,
     onPrimary = Color.White,
@@ -29,6 +28,9 @@ private val LightColorPalette = lightColors(
     onSurface = Color.Black,
     onError = Color.Red,
 )
+
+val Colors.secondaryUltraLight: Color
+    @Composable get() = if (isLight) Green50 else Green50
 
 val Colors.dimmedBackground: Color
     @Composable get() = if (isLight) BlueGrey50 else BlueGrey50
