@@ -12,34 +12,44 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.climblog3.domain.Climb
+import com.example.climblog3.domain.ClimbStyle
 import com.example.climblog3.presentation.ui.theme.ClimbLog3Theme
 import com.example.climblog3.presentation.ui.theme.dimmedBackground
-import com.example.climblog3.presentation.utils.ColorAccent
-import com.example.climblog3.presentation.utils.NestedList
-import com.example.climblog3.presentation.utils.TallTopAppBar
+import com.example.climblog3.presentation.views.ColorAccent
+import com.example.climblog3.presentation.views.FAB
+import com.example.climblog3.presentation.views.NestedList
+import com.example.climblog3.presentation.views.TallTopAppBar
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 @Composable
-fun LogbookScreenContent(viewModel: LogbookViewModel = viewModel()) {
-    val climbsByGrade by viewModel.climbsByGrade.collectAsState(emptyMap())
+fun LogbookScreen(viewModel: LogbookViewModel = viewModel()) {
+    val climbsByGrade by viewModel
+        .climbsByGrade
+        .toListModel()
+        .collectAsState(emptyMap())
 
-    val content = climbsByGrade.toListModel()
+    LogbookScreenContent(climbsByGrade, viewModel::addClimb)
+}
 
+@Composable
+private fun LogbookScreenContent(
+    climbsByGrade: Map<ListHeading, List<ListContent>>,
+    onAddClimb: () -> Unit
+) {
     Surface(
         color = colors.dimmedBackground
     ) {
         TallTopAppBar(title = "Logbook")
         OverlayContainer {
-            NestedList(
-                content
-            )
+            NestedList(climbsByGrade)
         }
     }
+    FAB(onClick = onAddClimb)
 }
 
 @Composable
-fun OverlayContainer(content: @Composable () -> Unit) {
+private fun OverlayContainer(content: @Composable () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -56,43 +66,27 @@ fun OverlayContainer(content: @Composable () -> Unit) {
     }
 }
 
-@Preview
-@Composable
-private fun LogbookScreenPreview() {
-    ClimbLog3Theme {
-        Surface(
-            color = colors.dimmedBackground
-        ) {
-            OverlayContainer {
-
-            }
+private fun Flow<Map<String, List<Climb>>>.toListModel(): Flow<Map<ListHeading, List<ListContent>>> =
+    map {
+        it.entries.associate { (grade, climbs) ->
+            grade.toListHeading(climbs.size) to climbs.toListContent()
         }
     }
-}
 
-@Composable
-private fun Map<String, List<Climb>>.toListModel(): Map<ListHeading, List<ListContent>> =
-    entries.associate { (grade, climbs) ->
-        grade.toListHeading(climbs.size) to climbs.toListContent()
-    }
-
-@Composable
-fun String.toListHeading(climbCount: Int) = object : ListHeading {
+private fun String.toListHeading(climbCount: Int) = object : ListHeading {
     override val id: String = this@toListHeading
     override val title: String = "Grade: ${this@toListHeading}"
     override val caption: String = "Total: $climbCount"
 }
 
-@Composable
 private fun List<Climb>.toListContent() = map { climb ->
-    val styleColor = getColorFor(climb)
 
     object : ListContent {
         override val title: String = climb.name
         override val caption: String = climb.grade // TODO make this crag
         override val LeftIcon: @Composable (Modifier) -> Unit = { modifier ->
             ColorAccent(
-                color = styleColor,
+                color = getColorFor(climb.style),
                 modifier = modifier
             )
         }
@@ -104,6 +98,18 @@ private fun List<Climb>.toListContent() = map { climb ->
 }
 
 @Composable
-private fun getColorFor(climb: Climb): Color {
+private fun getColorFor(style: ClimbStyle): Color {
     return colors.error
+}
+
+@Preview
+@Composable
+private fun LogbookScreenPreview() {
+    ClimbLog3Theme {
+        Surface(
+            color = colors.dimmedBackground
+        ) {
+            LogbookScreenContent(emptyMap()) {}
+        }
+    }
 }

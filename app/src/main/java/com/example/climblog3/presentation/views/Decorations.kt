@@ -1,4 +1,4 @@
-package com.example.climblog3.presentation.utils
+package com.example.climblog3.presentation.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -23,6 +23,10 @@ class LogbookViewModel @Inject constructor(
             .toSortedMap()
     }
 
+    fun addClimb() {
+        // Open Bottom Sheet for input
+    }
+
     fun insert(climb: Climb) = viewModelScope.launch {
         repository.insert(climb)
     }

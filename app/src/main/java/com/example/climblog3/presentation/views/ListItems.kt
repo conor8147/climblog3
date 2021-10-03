@@ -1,4 +1,4 @@
-package com.example.climblog3.presentation.utils
+package com.example.climblog3.presentation.views
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -8,7 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.climblog3.presentation.ui.theme.ClimbLog3Theme
@@ -51,9 +50,9 @@ fun ListContentItem(
 ) {
     Surface(
         Modifier.height(64.dp),
-        color = MaterialTheme.colors.secondaryUltraLight,
+        color = MaterialTheme.colors.secondaryUltraLight.copy(alpha = 0.5f),
     ) {
-        LeftIcon(Modifier.padding(start = 4.dp))
+        LeftIcon(Modifier.padding(start = 6.dp))
 
         Row(
             modifier = Modifier
