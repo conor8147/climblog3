@@ -12,4 +12,4 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun climbDao(): ClimbDao
 }
 
-private const val DB_VERSION = 1
+private const val DB_VERSION = 2

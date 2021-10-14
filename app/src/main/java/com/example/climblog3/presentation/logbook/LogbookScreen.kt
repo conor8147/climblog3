@@ -1,5 +1,6 @@
 package com.example.climblog3.presentation
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -13,6 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.climblog3.domain.Climb
 import com.example.climblog3.domain.ClimbStyle
+import com.example.climblog3.presentation.logbook.AddClimbBottomSheet
+import com.example.climblog3.presentation.logbook.LogbookViewModel
 import com.example.climblog3.presentation.ui.theme.ClimbLog3Theme
 import com.example.climblog3.presentation.ui.theme.dimmedBackground
 import com.example.climblog3.presentation.views.ColorAccent
@@ -22,6 +25,7 @@ import com.example.climblog3.presentation.views.TallTopAppBar
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+@ExperimentalAnimationApi
 @Composable
 fun LogbookScreen(viewModel: LogbookViewModel = viewModel()) {
     val climbsByGrade by viewModel
@@ -29,9 +33,26 @@ fun LogbookScreen(viewModel: LogbookViewModel = viewModel()) {
         .toListModel()
         .collectAsState(emptyMap())
 
-    LogbookScreenContent(climbsByGrade, viewModel::addClimb)
+    LogbookScreenContent(
+        climbsByGrade,
+        viewModel::addClimbClicked
+    )
+
+    if (viewModel.bottomSheetOpened) {
+        AddClimbBottomSheet(
+            onDoneClicked = {
+                viewModel.addClimb()
+            },
+            nameTextState = viewModel.nameTextState,
+            cragTextState = viewModel.cragTextState,
+            gradeTextState = viewModel.gradeTextState,
+            styleTextState = viewModel.styleTextState,
+            starsState = viewModel.starsState,
+        )
+    }
 }
 
+@ExperimentalAnimationApi
 @Composable
 private fun LogbookScreenContent(
     climbsByGrade: Map<ListHeading, List<ListContent>>,
@@ -83,7 +104,7 @@ private fun List<Climb>.toListContent() = map { climb ->
 
     object : ListContent {
         override val title: String = climb.name
-        override val caption: String = climb.grade // TODO make this crag
+        override val caption: String = climb.crag
         override val LeftIcon: @Composable (Modifier) -> Unit = { modifier ->
             ColorAccent(
                 color = getColorFor(climb.style),
@@ -102,6 +123,7 @@ private fun getColorFor(style: ClimbStyle): Color {
     return colors.error
 }
 
+@ExperimentalAnimationApi
 @Preview
 @Composable
 private fun LogbookScreenPreview() {

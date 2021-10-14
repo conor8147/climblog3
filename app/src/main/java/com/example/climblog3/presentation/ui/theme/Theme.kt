@@ -5,7 +5,11 @@ import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
+import androidx.compose.material.ripple.LocalRippleTheme
+import androidx.compose.material.ripple.RippleAlpha
+import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 
 //private val DarkColorPalette = darkColors(
@@ -47,6 +51,21 @@ fun ClimbLog3Theme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composa
         colors = colors,
         typography = Typography,
         shapes = Shapes,
-        content = content
+    ) {
+        CompositionLocalProvider(
+            LocalRippleTheme provides ClimbLog3RippleTheme,
+            content = content,
+        )
+    }
+}
+
+private object ClimbLog3RippleTheme : RippleTheme {
+    @Composable
+    override fun defaultColor(): Color = MaterialTheme.colors.secondary
+
+    @Composable
+    override fun rippleAlpha(): RippleAlpha = RippleTheme.defaultRippleAlpha(
+        MaterialTheme.colors.onSurface,
+        lightTheme = !isSystemInDarkTheme()
     )
 }

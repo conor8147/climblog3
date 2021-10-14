@@ -1,8 +1,8 @@
 package com.example.climblog3.domain
 
 data class Climb(
-    val id: Int,
     val name: String,
+    val crag: String,
     val grade: String,
     val style: ClimbStyle,
 )

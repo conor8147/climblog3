@@ -1,5 +1,9 @@
 package com.example.climblog3.presentation.views
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.expandVertically
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -10,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.example.climblog3.presentation.ListContent
 import com.example.climblog3.presentation.ListHeading
 
+@ExperimentalAnimationApi
 @Composable
 fun NestedList(
     contents: Map<ListHeading, List<ListContent>>
@@ -30,24 +35,30 @@ fun NestedList(
     }
 }
 
+@ExperimentalAnimationApi
 @Composable
 private fun ExpandableList(
     expanded: Boolean,
     content: List<ListContent>?,
 ) {
-    if (expanded) {
-        content?.forEach { listContent ->
-            ListContentItem(
-                title = listContent.title,
-                caption = listContent.caption,
-                LeftIcon = { modifier ->
-                    listContent.LeftIcon(modifier)
-                },
-                RightIcon = { modifier ->
-                    listContent.RightIcon(modifier)
-                }
-            )
-            Divider(modifier = Modifier.padding(start = 16.dp))
+    AnimatedVisibility(
+        visible = expanded,
+        enter = expandVertically()
+    ) {
+        Column {
+            content?.forEach { listContent ->
+                ListContentItem(
+                    title = listContent.title,
+                    caption = listContent.caption,
+                    LeftIcon = { modifier ->
+                        listContent.LeftIcon(modifier)
+                    },
+                    RightIcon = { modifier ->
+                        listContent.RightIcon(modifier)
+                    }
+                )
+                Divider(modifier = Modifier.padding(start = 16.dp))
+            }
         }
     }
 }

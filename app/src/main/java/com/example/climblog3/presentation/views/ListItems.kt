@@ -8,23 +8,28 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.climblog3.R
 import com.example.climblog3.presentation.ui.theme.ClimbLog3Theme
 import com.example.climblog3.presentation.ui.theme.secondaryUltraLight
 
 @Composable
 fun ListHeaderItem(title: String, caption: String, onClick: () -> Unit) {
+    val contentItemHeight = dimensionResource(R.dimen.list_heading_height)
+    val horizontalPadding = dimensionResource(R.dimen.padding_m)
+
     Row(
         modifier = Modifier
-            .height(48.dp)
+            .height(contentItemHeight)
             .fillMaxWidth()
-            .clickable { onClick() },
+            .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = title,
-            modifier = Modifier.padding(start = 16.dp),
+            modifier = Modifier.padding(start = horizontalPadding),
             style = MaterialTheme.typography.subtitle1,
         )
         Row(
@@ -34,7 +39,7 @@ fun ListHeaderItem(title: String, caption: String, onClick: () -> Unit) {
         ) {
             Text(
                 text = caption,
-                modifier = Modifier.padding(end = 16.dp),
+                modifier = Modifier.padding(end = horizontalPadding),
                 style = MaterialTheme.typography.caption,
             )
         }
@@ -48,11 +53,16 @@ fun ListContentItem(
     LeftIcon: @Composable ((Modifier) -> Unit) = {},
     RightIcon: @Composable ((Modifier) -> Unit) = {},
 ) {
+    val contentItemHeight = dimensionResource(R.dimen.list_body_height)
+    val leftIconPadding = dimensionResource(R.dimen.padding_xs)
+    val verticalPadding = dimensionResource(R.dimen.padding_sm)
+    val horizontalPadding = dimensionResource(R.dimen.padding_m)
+
     Surface(
-        Modifier.height(64.dp),
+        Modifier.height(contentItemHeight),
         color = MaterialTheme.colors.secondaryUltraLight.copy(alpha = 0.5f),
     ) {
-        LeftIcon(Modifier.padding(start = 6.dp))
+        LeftIcon(Modifier.padding(start = leftIconPadding))
 
         Row(
             modifier = Modifier
@@ -62,14 +72,14 @@ fun ListContentItem(
             Column {
                 Text(
                     text = title,
-                    modifier = Modifier.padding(start = 16.dp, top = 12.dp),
+                    modifier = Modifier.padding(horizontalPadding, top = verticalPadding),
                     style = MaterialTheme.typography.subtitle1,
                 )
 
                 Row {
                     Text(
                         text = caption,
-                        modifier = Modifier.padding(start = 16.dp),
+                        modifier = Modifier.padding(start = horizontalPadding),
                         style = MaterialTheme.typography.caption,
                     )
                 }
@@ -80,7 +90,7 @@ fun ListContentItem(
                 modifier = Modifier.fillMaxSize(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                RightIcon(Modifier.padding(end = 16.dp))
+                RightIcon(Modifier.padding(end = horizontalPadding))
             }
         }
     }

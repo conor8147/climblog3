@@ -9,17 +9,20 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
+import com.example.climblog3.R
 
 @Composable
 fun ColorAccent(
     color: Color,
     modifier: Modifier,
 ) {
+    val width = dimensionResource(R.dimen.color_accent_width)
+    val padding = dimensionResource(R.dimen.padding_xxs)
     Box(
         modifier = modifier
-            .width(2.dp)
-            .padding(top = 4.dp, bottom = 4.dp)
+            .width(width)
+            .padding(top = padding, bottom = padding)
             .fillMaxHeight()
             .background(
                 color = color,

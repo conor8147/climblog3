@@ -10,22 +10,23 @@ class DbClimb(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String,
+    val crag: String,
     val grade: String,
     val style: String,
 )
 
 fun DbClimb.toModel(): Climb =
     Climb(
-        id = id,
         name = name,
+        crag = crag,
         grade = grade,
         style = ClimbStyle.valueOf(style),
     )
 
 fun Climb.toDb(): DbClimb =
     DbClimb(
-        id = id,
         name = name,
+        crag = crag,
         grade = grade,
         style = style.name,
     )
